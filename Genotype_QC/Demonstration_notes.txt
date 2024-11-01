@@ -1,0 +1,33 @@
+## PopGen Workshop - Genotype QC ##
+## Demonstration ##
+
+# Take a look at what the PLINK binary files look like
+xxd -b Target.bed # The bi-allelic genotype table. Primary representation of genotype calls at biallelic variants.
+head Target.bim # Extended variant information file accompanying a .bed binary genotype table.
+head Target.fam # Sample information file accompanying a .bed binary genotype table.
+
+# Take a look at how PLINK works
+./../Software/plink2 --help
+
+Most PLINK runs require exactly one main input fileset. The following flags are available for defining its form and location:
+--bfile  <prefix> ['vzs'] : Specify .bed + .bim[.zst] + .fam prefix.
+
+## Genotype QC ##
+# Step 1: Remove SNPs with genotype call rate <95%.
+ ./../Software/plink2 --bfile Target --geno 0.05 --make-bed --out Target_geno0.05
+
+# Step 2: Remove individuals missing >10% genotypes.
+ ./../Software/plink2 --bfile Target_geno0.05 --mind 0.1 --make-bed --out Target_geno0.05_mind0.1
+
+# Step 3: Remove monomorphic SNPs
+# How many individuals are in the file? What is the MAF threshold we need to set? 
+# n = 14; maf= 1/2(14) = 1/28 = 0.036
+ ./../Software/plink2 --bfile Target_geno0.05_mind0.1 --maf 0.036 --make-bed --out Target_geno0.05_mind0.1_noMonoSNPs
+
+# Step 4: Remove SNPs deviating from HWE p-value = 1.00e-5
+ ./../Software/plink2 --bfile Target_geno0.05_mind0.1_noMonoSNPs --hwe 0.00001 --make-bed --out Target_geno0.05_mind0.1_noMonoSNPs_HWE
+
+## Note: we can also combine all the QC steps into one command line 
+ ./../Software/plink2 --bfile Target --geno 0.05 --mind 0.1 --maf 0.036 --hwe 0.00001 --make-bed --out Target_QC
+
+## One file has now been QC'd! Now do the Reference file on your own :)
