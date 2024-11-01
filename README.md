@@ -1,5 +1,5 @@
 # PopGen-workshop
-Scripts, steps and notes for the annual HostGen PopGen workshop. 
+This GitHub page contains scripts and demonstration notes for the annual PopGen workshop. Each directory also contains practice data and any important articles recommended by the lecturers. Please note that lecture slides and recordings are not included in this repository.
 
 ## Concepts covered in the first workshop:
 - Genotype quality control (QC)
