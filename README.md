@@ -12,3 +12,8 @@ This GitHub page contains scripts and demonstration notes for the annual PopGen 
 - Admixture mapping
 - Local Ancestry Adjusted Allelic Association (LAAA) models
 - Polygenic Risk Scores (PRSs)
+
+## Required software:
+- PLINK v1.9 and v2 (https://www.cog-genomics.org/plink/1.9/)
+- BCFTools v1.21 (http://www.htslib.org/download/)
+
