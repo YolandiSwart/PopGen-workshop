@@ -16,4 +16,4 @@ This GitHub page contains scripts and demonstration notes for the annual PopGen 
 ## Required software:
 - PLINK v1.9 and v2 (https://www.cog-genomics.org/plink/1.9/)
 - BCFTools v1.21 (http://www.htslib.org/download/)
-
+- SHAPEIT v2 (https://mathgen.stats.ox.ac.uk/genetics_software/shapeit/shapeit.html)
