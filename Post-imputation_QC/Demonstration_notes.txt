@@ -14,6 +14,15 @@ This step will remove really rare SNPs (which are not the focus of this workshop
 for i in {1..22}; do bcftools filter -e 'INFO/RefPanelAF<0.01' chr${i}_imputed_INFO.vcf.gz -Oz -o chr${i}_imputed_INFO_MAF.vcf.gz; done
 
 # Step 3: Phase the imputed genotypes. 
-Before we move onto ancestry inference, we need to determine whether our genotypes lie on the same chromosome or not. 
+Before we move onto ancestry inference, we need to identify whether each allele at each SNP comes from the maternal or paternal chromosome. To do this, we need to perform phasing, the process of inferring haplotypes from genotype data. A phased VCF file will have genotypes separated by a pipe ("|") instead of a forward slash ("/"). 
 
-To do this, we need to phase (
+In this demonstration, we will phase our imputed VCF files using SHAPEIT. You will also need a haplotype map (in this demonstration, we will use the HapMap recombination map file available at https://ftp.ncbi.nlm.nih.gov/hapmap/recombination/2011-01_phaseII_B37/).
+
+for i in {1..22}; do ./shapeit --input-vcf chr${i}_imputed_INFO_MAF.vcf.gz -M genetic_map_chr${i}_combined_b37.txt -O chr${i}_imputed_INFO_MAF.phased; done
+
+## Note, phasing is a computationally intensive process. It will take a while to run and will require a bit of free memory. ##
+
+You are now ready to move onto the next step - Ancestry inference!
+
+
+
