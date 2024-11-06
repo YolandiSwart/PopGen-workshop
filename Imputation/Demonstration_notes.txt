@@ -7,4 +7,22 @@
 # Step 1: Convert your QC'd merged PLINK files to Variant Call Format (VCF).
 ./plink2 --bfile Merged_files_QC --recode vcf --out Merged_files_QC
 
-# 
+# Step 2: Upload your file to the Sanger Imputation Server. 
+Before you start your upload, ensure that you have read through instructions and set up a free Globus account (https://www.globus.org).
+
+Once your account is set up, fill in the registration details of your imputation job on the Sanger Imputation Server home page. You will then be prompted to choose a reference panel and an imputation pipeline. 
+
+In this workshop, we will use the African Genome Resources reference panel and the pre-phasing and imputation with SHAPEIT+PBWT imputation pipeline. Submit your job. 
+
+Follow the instructions emailed by Globus and the imputation server to upload your data. If all has gone well, your data should be phasing and imputing! Yes, it really is that easy. 
+
+## Troubleshooting ##
+If the imputation server sends an error message regarding REF allele mismatches, this means that the reference alleles in your VCF file do not match the GRCh37 reference fasta file. You can correct this error using the fasta file here (ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/human_g1k_v37.fasta.gz) and the following BCFTools command:
+
+bcftools +fixref test.vcf -Ob -o output.vcf -- -f ref.fa -m top
+
+Once you have corrected the mismatching reference alleles, repeat step 2 with the new VCF file. 
+
+# Step 3: You will receive emails from Globus and the imputation server once your job has finished. Use the Globus link to download your imputed files. Note that the Sanger Imputation Server outputs imputed VCF files for chromosomes 1 to 22. 
+
+## You are now ready to move onto ancestry inference :)
