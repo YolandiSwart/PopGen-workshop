@@ -1,0 +1,10 @@
+## PopGen Workshop - Imputation ##
+## Demonstration ##
+
+# Imputation is the processing of inferring unobserved genotypes in a sample population using a reference panel of known haplotypes from diverse populations. 
+# In this demonstration, we will perform imputation through the Sanger Imputation Service, which has been made freely and publicly available by the Wellcome Sanger Institute (https://imputation.sanger.ac.uk).
+
+# Step 1: Convert your QC'd merged PLINK files to Variant Call Format (VCF).
+./plink2 --bfile Merged_files_QC --recode vcf --out Merged_files_QC
+
+# 
