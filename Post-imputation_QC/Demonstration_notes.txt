@@ -37,6 +37,8 @@ bcftools concat chr1_imputed_QC_phased.vcf.gz chr2_imputed_QC_phased.vcf.gz chr3
 # Step 4: Remove related individuals. 
 Many downstream statistical analyses, such as ancestry inference and genetic association models, require all individuals in the dataset to be unrelated. Before we move on, we must look to see if there are related individuals in our dataset and remove one related individual from each relationship pair. Normally, we want to remove individuals that are closer than second-degree relatives. 
 
+## Note, LD pruning is not recommended for running KING.
+
 First, convert your merged, imputed, QC'd and phased file to PLINK binary file format. 
 
 ./plink2 --vcf PopGen_allSamples_imputed_QC_phased.vcf.gz --make-bed --out PopGen_allSamples_imputed_QC
