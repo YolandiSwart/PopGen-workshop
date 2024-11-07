@@ -1,0 +1,2 @@
+## PopGen Workshop - Ancestry inference using ADMIXTURE ##
+## Demonstration ##
