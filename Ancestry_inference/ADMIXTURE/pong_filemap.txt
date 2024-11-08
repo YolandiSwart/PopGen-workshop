@@ -1,5 +1,0 @@
-k2r1  2  PopGen_allSamples_imputed_QC_removeRelateds_ChrBp_LD-pruned.2.Q
-k3r1  3  PopGen_allSamples_imputed_QC_removeRelateds_ChrBp_LD-pruned.3.Q
-k4r1	4  PopGen_allSamples_imputed_QC_removeRelateds_ChrBp_LD-pruned.4.Q
-k5r1	5  PopGen_allSamples_imputed_QC_removeRelateds_ChrBp_LD-pruned.5.Q
-k6r1	6  PopGen_allSamples_imputed_QC_removeRelateds_ChrBp_LD-pruned.6.Q
