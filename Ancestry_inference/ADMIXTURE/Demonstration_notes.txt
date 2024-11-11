@@ -1,4 +1,4 @@
-## PopGen Workshop - Ancestry inference using ADMIXTURE ##
+## PopGen Workshop - Global ancestry inference using ADMIXTURE ##
 ## Demonstration ##
 
 In this demonstration, we will show you how to use the ADMIXTURE ancestry inference software to obtain global ancestry proportions for your target samples.
