@@ -1,2 +1,9 @@
 ## PopGen Workshop - Ancestry inference using ADMIXTURE ##
 ## Demonstration ##
+
+In this demonstration, we will show you how to use the ADMIXTURE ancestry inference software to obtain global ancestry proportions for your target samples.
+
+# Step 1: 
+ADMIXTURE requires unlinked SNPs in PLINK binary file format. Perform LD-pruning in PLINK on your merged file (i.e. the one following post-imputation QC) using the following parameters - r2 > 0.1 within a 50 SNP sliding window, advanced by 10 SNPs at a time.
+
+./plink2 --bfile PopGen_allSamples_imputed_QC.bed 
