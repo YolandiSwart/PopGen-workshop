@@ -1,4 +1,6 @@
 ## PopGen Workshop - Local ancestry inference using RFMix ##
 ## Demonstration ##
 
-# RFMix requires a phased VCF file containing the target individuals and a phased VCF file containing the reference individuals.
+# RFMix requires a phased VCF file containing the target individuals and a phased VCF file containing the reference individuals. It also required a genetic map file and a reference sample map file that gives the population label for each reference sample. Examples of the sample map file can be found in this directory. 
+
+
