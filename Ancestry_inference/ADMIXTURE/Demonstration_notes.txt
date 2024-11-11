@@ -6,4 +6,28 @@ In this demonstration, we will show you how to use the ADMIXTURE ancestry infere
 # Step 1: 
 ADMIXTURE requires unlinked SNPs in PLINK binary file format. Perform LD-pruning in PLINK on your merged file (i.e. the one following post-imputation QC) using the following parameters - r2 > 0.1 within a 50 SNP sliding window, advanced by 10 SNPs at a time.
 
-./plink2 --bfile PopGen_allSamples_imputed_QC.bed 
+./plink2 --bfile PopGen_allSamples_imputed_QC.bed --indep-pairwise 50 10 0.1 --out LD-pruned
+
+# Step 2: 
+Extract the unlinked SNPs from the merged file. 
+
+./plink2 --bfile PopGen_allSamples_imputed_QC.bed --extract LD-pruned.prune.in --make-bed --out PopGen_allSamples_imputed_QC_LD-pruned
+
+# Step 3: 
+We are now ready to run ADMIXTURE. Run it with cross-validation for K-values between K=2 and K=6 to determine the correct number of ancestries contributing to your target population. Note that, for ADMIXTURE, your target and reference samples must be in one file. 
+
+for K in {2..6}; do ./admixture --cv PopGen_allSamples_imputed_QC_LD-pruned.bed ${K} > log.K${K}.out; done
+
+The correct number of ancestral contributions (i.e. the correct K value) is typically the value with the lowest cross-valiation error. We can quickly view the CV errors: 
+
+grep -h CV log.*.out 
+
+However, it might also be useful to view the global ancestral proportions for all individuals for all values of K to determine which K-value makes the most sense.
+
+# Step 4:
+Visualise the global ancestry proportions determined by ADMIXTURE in an admixture plot using pong.
+More detail on the files required to run pong can be found on the software's GitHub page (https://github.com/ramachandran-lab/pong). We have included the files required for this run in the ADMIXTURE directory. 
+
+./pong -m pong_filemap.txt -i ind2pop.txt -n pop_order.txt
+
+Navigate to the webserver provided to visualise the plot. 
