@@ -21,6 +21,12 @@ for K in {2..6}; do ./admixture --cv PopGen_allSamples_imputed_QC_LD-pruned.bed 
 The correct number of ancestral contributions (i.e. the correct K value) is typically the value with the lowest cross-valiation error. We can quickly view the CV errors: 
 
 grep -h CV log.*.out 
+# Output for our dataset #
+CV error (K=2): 0.29982
+CV error (K=3): 0.31134
+CV error (K=4): 0.32237
+CV error (K=5): 0.34165
+CV error (K=6): 0.36845
 
 However, it might also be useful to view the global ancestral proportions for all individuals for all values of K to determine which K-value makes the most sense.
 
