@@ -3,4 +3,45 @@
 
 # RFMix requires a phased VCF file containing the target individuals and a phased VCF file containing the reference individuals. It also required a genetic map file and a reference sample map file that gives the population label for each reference sample. Examples of the sample map file can be found in this directory. 
 
+# Step 1: Make two separate VCF files (containing the target and reference individuals) from the phased merged file (see Post-Imputation QC for steps on how to phase). 
+
+bcftools view -S Reference_individuals.txt PopGen_allSamples_imputed_QC_phased_removeRelateds.vcf.gz -Oz -o PopGen_ReferenceSamples_imputed_QC_phased_removeRelateds.vcf.gz
+bcftools view -S Target_individuals.txt PopGen_allSamples_imputed_QC_phased_removeRelateds.vcf.gz -Oz -o PopGen_TargetSamples_imputed_QC_phased_removeRelateds.vcf.gz
+
+# Step 2: Run RFMix. Here, we run RFMix using default parameters and the following additional options - 15 genetations since admixture, 3 expectations maximisation iterations and the reanalyze reference flag. 
+
+for i in {1..22}; do rfmix -f chr${i}_PopGen_TargetSamples_imputed_QC_phased_removeRelateds.vcf.gz -r chr${i}_PopGen_ReferenceSamples_imputed_QC_phased_removeRelateds.vcf.gz -m Sample_map -g /mnt/lustre/groups/HEAL1360/Resources/RFMix_recombination_maps/chr${i}_geneticmap4rfmixv5_grch37.txt -n 4 -G 15 -e 3 -o chr${i}_PopGen_TargetSamples_RFMix --chromosome=${i} --n-threads=24 --reanalyze-reference; done
+
+The local ancestry will now be inferred for each genetic locus on each chromosome. 
+
+# Step 3: We can make a local ancestry karyogram for one of our target individuals (for instance, HGDP00993).
+
+# Extract local ancestry information for the individual of interest from the .msp.tsv files:
+for i in {1..22}; do awk '{print $1,$2,$3,$4,$5,$13,$14}' chr${i}_PopGen_TargetSamples_RFMix.msp.tsv > HGDP00993_chr${i}.txt; done
+
+# Remove the headers from these files and concatenate all chromosomes into one file:
+for i in {1..22}; do sed '1,2d' HGDP00993_chr${i}.txt > HGDP00993_chr${i}_noHeader.txt; done
+
+cat HGDP00993_chr1_noHeader.txt HGDP00993_chr2_noHeader.txt HGDP00993_chr3_noHeader.txt HGDP00993_chr4_noHeader.txt HGDP00993_chr5_noHeader.txt HGDP00993_chr6_noHeader.txt HGDP00993_chr7_noHeader.txt HGDP00993_chr8_noHeader.txt HGDP00993_chr9_noHeader.txt HGDP00993_chr10_noHeader.txt HGDP00993_chr11_noHeader.txt HGDP00993_chr12_noHeader.txt HGDP00993_chr13_noHeader.txt HGDP00993_chr14_noHeader.txt HGDP00993_chr15_noHeader.txt HGDP00993_chr16_noHeader.txt HGDP00993_chr17_noHeader.txt HGDP00993_chr18_noHeader.txt HGDP00993_chr19_noHeader.txt HGDP00993_chr20_noHeader.txt HGDP00993_chr21_noHeader.txt HGDP00993_chr22_noHeader.txt > HGDP00993_allChr.txt 
+
+# Replace numbers for the correct corresponding ancestry. In our files, BantuKenya (BK) is coded as 0, BiakaPygmy (BP) as 1, French (FR) as 2, Mandenka (MK) as 3, MbutiPygmy (MP) and 4 and Yoruba (YR) as 5. We want to substitute the numbers for the ancestries/populations they are referring to. Additionally, we want to split up the two haplotypes (A and B) into two separate files: 
+
+awk -F " " '{print $1,$2,$3,$6,$4,$5}' HGDP00993_allChr.txt > HGDP00993_haplotype_1.txt
+awk '{gsub("0","BantuKenya", $4)}1' HGDP00993_haplotype_1.txt > HGDP00993_haplotype_1_BK.txt
+awk '{gsub("1","BikaPygmy", $4)}1' HGDP00993_haplotype_1_BK.txt > HGDP00993_haplotype_1_BK_BP.txt
+awk '{gsub("2","French",$4)}1' HGDP00993_haplotype_1_BK_BP.txt > HGDP00993_haplotype_1_BK_BP_FR.txt
+awk '{gsub("3","Mandenka",$4)}1' HGDP00993_haplotype_1_BK_BP_FR.txt > HGDP00993_haplotype_1_BK_BP_FR_MK.txt
+awk '{gsub("4","MbutiPygmy",$4)}1' HGDP00993_haplotype_1_BK_BP_FR_MK.txt > HGDP00993_haplotype_1_BK_BP_FR_MK_MP.txt
+awk '{gsub("5","Yoruba",$4)}1' HGDP00993_haplotype_1_BK_BP_FR_MK_MP.txt > HGDP00993_A.bed
+
+awk -F " " '{print $1,$2,$3,$7,$4,$5}' HGDP00993_allChr.txt > HGDP00993_haplotype_2.txt
+awk '{gsub("0","BantuKenya", $4)}1' HGDP00993_haplotype_2.txt > HGDP00993_haplotype_2_BK.txt
+awk '{gsub("1","BikaPygmy", $4)}1' HGDP00993_haplotype_2_BK.txt > HGDP00993_haplotype_2_BK_BP.txt
+awk '{gsub("2","French",$4)}1' HGDP00993_haplotype_2_BK_BP.txt > HGDP00993_haplotype_2_BK_BP_FR.txt
+awk '{gsub("3","Mandenka",$4)}1' HGDP00993_haplotype_2_BK_BP_FR.txt > HGDP00993_haplotype_2_BK_BP_FR_MK.txt
+awk '{gsub("4","MbutiPygmy",$4)}1' HGDP00993_haplotype_2_BK_BP_FR_MK.txt > HGDP00993_haplotype_2_BK_BP_FR_MK_MP.txt
+awk '{gsub("5","Yoruba",$4)}1' HGDP00993_haplotype_2_BK_BP_FR_MK_MP.txt > HGDP00993_B.bed
+
+# Finally, we can run the plot_karyogram.py script to generate our local ancestry karyogram:
+python2 plot_karyogram.py --bed_a  HGDP00993_A.bed --bed_b HGDP00993_B.bed --ind HGDP00993 --pop_order 'BantuKenya,BiakaPygmy,French,Mandenka,MbutiPygmy,Yoruba' --centromeres centromeres_hg19.bed --colors '#ff0001,#15b400,#0b40ff,#700baf,#f79012,#ffee33' --out HGDP00993.png
 
