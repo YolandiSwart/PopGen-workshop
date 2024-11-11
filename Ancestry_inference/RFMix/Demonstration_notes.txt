@@ -1,3 +1,4 @@
-## PopGen Workshop - Ancestry inference using RFMix ##
+## PopGen Workshop - Local ancestry inference using RFMix ##
 ## Demonstration ##
 
+# RFMix requires a phased VCF file containing the target individuals and a phased VCF file containing the reference individuals.
